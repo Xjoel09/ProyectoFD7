@@ -1,0 +1,73 @@
+{% load static %}
+<!--  ================================
+Start Navigation Bar
+=================================  -->
+<body>
+  <header>
+    <div class="headerCol">
+      <div class="container-fluid">
+        <div class="row align-items-center">
+          <div class="col-auto">
+            <div class="logoCol">
+              <a href="{% url 'main:home' %}"><img src="{% static 'images/Logo.png' %}" alt="..." /></a>
+            </div>
+          </div>
+          <div class="col">
+            <div class="d-md-none">
+              <button class="navToggle"><span class="navToggle__text">Toggle Menu</span></button>
+            </div>
+            <div class="navCollapseCol">
+              <div class="navCol">
+                <ul style="font-family: 'Chivo Mono', monospace;">
+                  <li>
+                    <a href="{% url 'main:home' %}">Home</a>
+                  </li>
+                  <li>
+                    <a href="{% url 'main:product_list' %}">Productos</a>
+                  </li>
+                  {% if user.is_authenticated %}
+                    <li>
+                      <a href="{% url 'main:logout' %}">Cerrar sesión</a>
+                    </li>
+                  {% else %}
+                    <li>
+                      <a href="{% url 'main:login' %}">Iniciar sesión</a>
+                    </li>
+                    <li>
+                      <a href="{% url 'main:register' %}">Registrarse</a>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <style>
+    ul li {
+      list-style: none;
+    }
+    ul li a {
+      font-size: 26px;
+      font-weight: 700;
+      text-decoration: none;
+      text-transform: uppercase;
+      color: #343a40;
+      padding: 10px;
+      transition: 0.5s ease;
+    }
+    ul:hover li a {
+      color: #30edf4;
+    }
+    ul:hover li a:not(:hover) {
+      color: #343a40;
+      opacity: 0.3;
+      filter: blur(1px);
+    }
+  </style>
+</body>
+<!--  ================================
+End Navigation Bar
+=================================  -->

@@ -1,0 +1,208 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!--   ================================
+Start SEO blocks
+=================================   -->
+{% block title %}
+  Listado de Productos
+{% endblock %}
+{% block description %}
+  Lista de todos los productos disponibles
+{% endblock %}
+{% block keywords %}
+  productos, categorías
+{% endblock %}
+<!--   ================================
+END SEO blocks
+=================================   -->
+
+<!--   ================================
+Start CSS blocks
+=================================   -->
+{% block extend_header %}
+  <style>
+    .product-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: white;
+      height: 100%;
+    }
+    
+    .product-image {
+      width: 240px;
+      height: 240px;
+      background-color: #f0f0f0; /* Fondo gris-blanco */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+    }
+    
+    .product-details {
+      flex: 1;
+      padding-left: 10px;
+    }
+    
+    /* Estilos para el botón Categorías */
+    .category-button {
+      background-color: #007bff;
+      color: #fff;
+      padding: 5px 10px; /* Ajustar el espaciado interno */
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px; /* Separar el botón del primer producto */
+      width: 120px; /* Ancho automático para el botón */
+      text-align: center; /* Centrar el texto en el botón */
+    }
+    
+    /* Estilos para el menú de categorías */
+    .category-menu {
+      display: none;
+      position: absolute;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      margin-top: 5px;
+      min-width: 90px; /* Ajustar el ancho mínimo */
+      text-align: left; /* Alinear el texto a la izquierda */
+    }
+    
+    .category-button:hover + .category-menu,
+    .category-menu:hover {
+      display: block;
+    }
+    
+    .category-menu a {
+      display: block;
+      padding: 8px 12px;
+      text-decoration: none;
+      color: #333;
+    }
+    
+    .category-menu a:hover {
+      background-color: #f0f0f0;
+    }
+    
+    /* Estilos para alinear los productos a la derecha */
+    .product-list {
+      margin-left: auto;
+      margin-right: 0;
+    }
+  </style>
+{% endblock %}
+<!--   ================================
+
+END CSS blocks
+=================================   -->
+
+<!--   ================================
+Start script blocks
+=================================   -->
+{% block extend_footer %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const categoryButton = document.querySelector('.category-button')
+      const categoryMenu = document.querySelector('.category-menu')
+    
+      categoryButton.addEventListener('click', function () {
+        categoryMenu.style.display = categoryMenu.style.display === 'block' ? 'none' : 'block'
+      })
+    
+      document.addEventListener('click', function (event) {
+        if (!categoryButton.contains(event.target) && !categoryMenu.contains(event.target)) {
+          categoryMenu.style.display = 'none'
+        }
+      })
+    })
+  </script>
+{% endblock %}
+<!--   ================================
+END script blocks
+=================================   -->
+
+<!--   ================================
+Start Content
+=================================   -->
+{% block content %}
+  <body>
+    
+    <section>
+      <div class="innerPageBannerCol">
+        <!-- Centro vertical -->
+        <div class="container">
+          <!-- Centro horizontal -->
+          <div class="row g-4 g-md-3 align-items-center">
+            <div class="col-md-12">
+              <div class="bannerContent">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <!-- Columna para el logotipo -->
+                            <div class="logoCol">
+                                <img src="{% static 'images/logoi.png' %}" alt="Logo" style="max-width: 80%; max-height: 80%;" />
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <!-- Columna para el título -->
+                            <h1 class="xlTitle pb-md-5" style="font-size: 100px; font-family: Lovelyn;">Productos</h1>
+                        </div>
+                    </div>
+                </div>
+                <!-- formulario de filtro por categoría -->
+                <div class="dropdown">
+                  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Categoría: {{ selected_category_name }}
+                  </a>
+                
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'main:product_list' %}">Todos</a></li>
+                    {% for category in categories %}
+                      <li><a class="dropdown-item" href="{% url 'main:product_list' %}?category={{ category.id }}">{{ category.name }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="product-list">
+                  {% for product in products %}
+                    <a href="{% url 'main:product_detail' product.id %}" style="text-decoration: none; color: inherit;">
+                      <div class="product-container">
+                        <div class="product-image">
+                          {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%;" />
+                          {% else %}
+                            <p>Imagen no disponible</p>
+                          {% endif %}
+                        </div>
+                        <div class="product-details">
+                          <h2>{{ product.name }}</h2>
+                          <p>{{ product.description|truncatechars:100 }}</p>
+                          <p>
+                            <strong>Precio: ${{ product.price }}</strong>
+                          </p>
+                          <a href="{% url 'main:edit_product' product.id %}"><i class="fas fa-pencil-alt"></i> Editar</a>
+                        </div>
+                      </div>
+                    </a>
+                  {% endfor %}
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <!-- Botones Inferiores -->
+  <a href="{% url 'main:category_list' %}" class="btn btn-primary position-fixed bottom-0 start-0 m-3">Editar Categorías</a>
+  <a href="{% url 'main:create_product' %}" class="btn btn-primary position-fixed bottom-0 end-0 m-3">Crear Producto</a>
+  </body>
+  <!-- ver como incorporar esto -->
+  <!--   ================================
+End Content
+=================================   -->
+{% endblock %}
+

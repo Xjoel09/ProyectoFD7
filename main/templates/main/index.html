@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!--  ================================
+Start SEO blocks
+=================================  -->
+{% block title %}
+{% endblock %}
+{% block decription %}
+{% endblock %}
+{% block keywords %}
+{% endblock %}
+<!--  ================================
+END SEO blocks
+=================================  -->
+
+<!--  ================================
+Start CSS blocks
+=================================  -->
+{% block extend_header %}
+
+{% endblock %}
+<!--  ================================
+END CSS blocks
+=================================  -->
+
+<!--  ================================
+Start script blocks
+=================================  -->
+{% block extend_footer %}
+{% endblock %}
+<!--  ================================
+END script blocks
+=================================  -->
+
+<!--  ================================
+Start Content
+=================================  -->
+{% block content %}
+  <section>
+    <div class="bannerSection">
+      <div class="container">
+        <div class="row g-4 g-md-3 align-items-center">
+          <div class="col-md">
+            <div class="bannerContent">
+              <h1 class="xlTitle pb-3">Bienvenidos a nuestro MiniProyecto#2</h1>
+              <div class="logoCol">
+                <img src="{% static 'images/logoi.png' %}" alt="Logotipo" />
+              </div>
+              <div class="bannerBtnCol">
+                <div class="row"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+<!--  ================================
+End Content
+=================================  -->

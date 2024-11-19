@@ -1,0 +1,73 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}
+  Detalles del Producto
+{% endblock %}
+{% block description %}
+  Detalles del producto seleccionado
+{% endblock %}
+{% block keywords %}
+  producto, detalles, revisión, opiniones
+{% endblock %}
+
+{% block extend_header %}
+  <style>
+    /* Agregar estilos personalizados aquí si es necesario */
+    .review-form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .review-form label {
+      font-weight: bold;
+    }
+
+    .review-form .form-group {
+      margin-bottom: 20px;
+    }
+
+    .review-form .btn-primary {
+      background-color: #007BFF;
+      border: none;
+    }
+  </style>
+{% endblock %}
+
+{% block extend_footer %}
+  <script>
+    // Agregar scripts personalizados aquí si es necesario
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h1>Opiniones de {{ product.name }}</h1>
+    <div class="reviews">
+      {% for review in product.reviews.all %}
+        <div class="review">
+          <h3>Calificación: {{ review.rating }}</h3>
+          <p>{{ review.comment }}</p>
+        </div>
+      {% endfor %}
+    </div>
+    
+    <h2>Dejar una reseña</h2>
+    <form method="post" class="review-form">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="form-group">
+        <label for="{{ form.rating.id_for_label }}">Calificación:</label>
+        {{ form.rating }}
+        {{ form.rating.errors }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.comment.id_for_label }}">Comentario:</label>
+        {{ form.comment }}
+        {{ form.comment.errors }}
+      </div>
+      <button type="submit" class="btn btn-primary">Enviar Reseña</button>
+    </form>
+  </div>
+{% endblock %}
+

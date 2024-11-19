@@ -1,0 +1,186 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+<!--    ================================
+Start SEO blocks
+=================================    -->
+{% block title %}
+  Listado de Categorías
+{% endblock %}
+{% block description %}
+  Lista de todas las categorías disponibles
+{% endblock %}
+{% block keywords %}
+  categorías, productos
+{% endblock %}
+<!--    ================================
+END SEO blocks
+=================================    -->
+
+<!--    ================================
+Start CSS blocks
+=================================    -->
+{% block extend_header %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    /* Estilo para la lista de categorías */
+    ul.category-list {
+      list-style: none;
+      padding: 0;
+    }
+    
+    ul.category-list li {
+      margin-bottom: 10px;
+      font-size: 18px; /* Tamaño de fuente deseado */
+    }
+    
+    ul.category-list li a {
+      text-decoration: none;
+      color: #0000a0; /* color deseado */
+    }
+    
+    ul.category-list li a:hover {
+      text-decoration: underline; /* Subrayar al pasar el mouse */
+    }
+    
+    /* Estilo para el contenedor de detalles del producto */
+    .product-details-container {
+      display: flex;
+      align-items: center;
+    }
+    
+    .product-image {
+      width: 240px;
+      height: 240px;
+      background-color: #f0f0f0; /* Fondo gris-blanco */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid #ccc;
+      margin-right: 20px;
+    }
+    
+    .product-details {
+      flex: 1;
+    }
+    
+    .product-name {
+      font-size: 24px; /* Tamaño de fuente para el nombre del producto */
+    }
+    
+    .product-description {
+      font-size: 18px; /* Tamaño de fuente para la descripción */
+    }
+    
+    .product-price {
+      font-size: 20px; /* Tamaño de fuente para el precio */
+    }
+  </style>
+{% endblock %}
+<!--    ================================
+END CSS blocks
+=================================    -->
+
+<!--    ================================
+Start script blocks
+=================================    -->
+{% block extend_footer %}
+  <link rel="stylesheet" type="text/css" href="{% static 'MiniProyecto#2/static/starability-master' %}" />
+  <script src="{% static 'MiniProyecto#2/static/starability-master' %}"></script>
+{% endblock %}
+<!--    ================================
+END script blocks
+=================================    -->
+
+<!--    ================================
+Start Content
+=================================    -->
+{% block content %}
+  <body>
+    <section>
+      <div class="innerPageBannerCol">
+        <div class="container">
+          <!-- centra el titulo -->
+          <div class="row g-4 g-md-3 align-items-center">
+            <div class="col-md-10">
+              <!-- le da un salto de linea al titulo si es largo -->
+              <div class="bannerContent">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-2">
+                      <!-- Columna para el logotipo -->
+                      <div class="logoCol">
+                        <img src="{% static 'images/logoi.png' %}" alt="Logo" style="max-width: 80%; max-height: 80%;" />
+                      </div>
+                    </div>
+                    <div class="col-md-10">
+                      <!-- Columna para el título -->
+                      <h1 class="xlTitle pb-md-5" style="font-size: 100px; font-family: Lovelyn;">Detalles:</h1>
+                    </div>
+                  </div>
+                </div>
+                <div class="container">
+                  <div class="product-details-container">
+                    <div class="product-image">
+                      <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 100%; max-height: 100%;" />
+                    </div>
+                    <div class="product-details">
+                      <h2 class="product-name">{{ product.name }}</h2>
+                      <p class="product-description">{{ product.description }}</p>
+                      <p class="product-price">
+                        <strong>Precio: ${{ product.price }}</strong>
+                      </p>
+                    </div>
+                  </div>
+                  <h1>Reviews:</h1>
+                  <ul>
+                    {% for review in reviews %}
+                      <li>
+                        <strong>{{ review.user.username }}:</strong>
+                        <p>{{ review.comment }}</p>
+                        <p>Rating: {{ review.rating }}/5</p>
+                      </li>
+                      {% empty %}
+                      <li>No hay reseñas para este producto.</li>
+                    {% endfor %}
+                  </ul>
+                  <!-- Agregar un formulario para que los usuarios dejen sus revisiones -->
+                  <h3>Dejar una Reseña:</h3>
+                  <form method="post" action="{% url 'main:add_review' product.id %}">
+                    {% csrf_token %}
+                    <label for="comment">Comentario:</label>
+                    <textarea name="comment" required></textarea>
+                    <label for="rating">Puntuación (1-5):</label>
+                    <input type="hidden" name="rating" id="rating" required />
+                    <div>
+                      <input type="radio" id="1-star" name="rating" value="1" />
+                      <label for="1-star" title="Muy malo"><i class="fas fa-star"></i></label>
+                    
+                      <input type="radio" id="2-stars" name="rating" value="2" />
+                      <label for="2-stars" title="Malo"><i class="fas fa-star"></i></label>
+                    
+                      <input type="radio" id="3-stars" name="rating" value="3" />
+                      <label for="3-stars" title="Promedio"><i class="fas fa-star"></i></label>
+                    
+                      <input type="radio" id="4-stars" name="rating" value="4" />
+                      <label for="4-stars" title="Bueno"><i class="fas fa-star"></i></label>
+                    
+                      <input type="radio" id="5-stars" name="rating" value="5" />
+                      <label for="5-stars" title="Excelente"><i class="fas fa-star"></i></label>
+                    </div>
+                    
+                    <button type="submit">Enviar Reseña</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+  <!-- ver como incorporar esto -->
+  <!--    ================================
+End Content
+=================================    -->
+{% endblock %}
